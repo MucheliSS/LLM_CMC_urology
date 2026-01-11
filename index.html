@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools for Clinical Teaching & Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --bg-card-hover: #22222e;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --text-muted: #6a6a7a;
+            --accent-blue: #4a9eff;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-cyan: #06b6d4;
+            --gradient-1: linear-gradient(135deg, #4a9eff 0%, #a855f7 100%);
+            --gradient-2: linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(74, 158, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        /* Slide Container */
+        .slides-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 60px 80px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 2rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.75rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--accent-blue);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--bg-card);
+        }
+
+        td {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: var(--bg-card);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid var(--accent-purple);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            background: var(--bg-card);
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-accent);
+            border-radius: 50px;
+            font-size: 1rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+        }
+
+        /* Award highlight */
+        .award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.1));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            color: var(--accent-amber);
+            margin: 1rem 0;
+        }
+
+        .award::before {
+            content: "🏆";
+            font-size: 1.5rem;
+        }
+
+        /* Two column layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Comparison table */
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .comparison-table .col-yes {
+            background: linear-gradient(180deg, rgba(34, 197, 94, 0.1), transparent);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .comparison-table .col-no {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.1), transparent);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .comparison-table h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .icon-yes {
+            color: var(--accent-green);
+        }
+
+        .icon-no {
+            color: var(--accent-red);
+        }
+
+        /* Tool cards */
+        .tool-category {
+            margin-bottom: 2rem;
+        }
+
+        .tool-category h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .tool-card .name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-card .desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .tool-card .access {
+            display: inline-block;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--accent-green);
+            background: rgba(34, 197, 94, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+        }
+
+        /* Title slide special styling */
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at center, var(--bg-secondary) 0%, var(--bg-primary) 70%);
+        }
+
+        .title-slide h1 {
+            font-size: 4rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        .title-slide .author {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-top: 3rem;
+        }
+
+        .title-slide .affiliation {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Interactive slide */
+        .poll-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .poll-option:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-card-hover);
+        }
+
+        .poll-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Key takeaway boxes */
+        .takeaway-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .takeaway {
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .takeaway-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        /* CTA slide */
+        .cta-box {
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(74, 158, 255, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .cta-box h3 {
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            margin-top: 0;
+        }
+
+        .cta-box ul {
+            text-align: left;
+            display: inline-block;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: var(--bg-card);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-subtle);
+            z-index: 100;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav button:hover {
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .nav button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        /* Emphasis text */
+        .highlight {
+            color: var(--accent-blue);
+        }
+
+        .warning {
+            color: var(--accent-amber);
+        }
+
+        .success {
+            color: var(--accent-green);
+        }
+
+        /* Disclaimer box */
+        .disclaimer {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .disclaimer p {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .two-col, .comparison-table {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .nav, .progress-bar { display: none; }
+            .slide { 
+                display: block !important; 
+                page-break-after: always; 
+                opacity: 1 !important;
+                position: relative;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="slides-container">
+        
+        <!-- SLIDE 1: Title -->
+        <div class="slide title-slide active">
+            <h1>AI Tools for Clinical Teaching & Research</h1>
+            <p class="subtitle">A Practical Guide for Urologists</p>
+            <div class="author">Mucheli Sharavan, MD, MRCP (UK) FAMS, (PhD)</div>
+            <div class="affiliation">National Centre for Infectious Diseases | NHG Group Education</div>
+        </div>
+
+        <!-- SLIDE 2: Why Me? -->
+        <div class="slide">
+            <h2>Why Me?</h2>
+            
+            <div class="two-col">
+                <div>
+                    <h3>My Perspective</h3>
+                    <ul>
+                        <li><strong>Educator First</strong> — Program Director | PhD in Medical Education</li>
+                        <li><strong>Co-Director</strong> — AI eNabled Education (AINE)</li>
+                    </ul>
+                    
+                    <div class="award">Best in AI-Driven Healthcare Innovation — GovInsider Healthcare Day 2025</div>
+                    
+                    <h3>Recent Publications in AI & MedEd</h3>
+                    <ul>
+                        <li><em>"Can Large Language Models Foster Reflective Practice?"</em> — Medical Science Educator</li>
+                        <li><em>"Medical Education in the Age of AI"</em> — HK Journal of Emergency Medicine</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <div class="disclaimer">
+                        <p>I am <strong class="highlight">NOT</strong> a coder or programmer.</p>
+                        <p>I'm an educator and enthusiast who jumped onto this train early.</p>
+                        <p>I'm here to share what I've learned from that journey.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Audience Pulse -->
+        <div class="slide">
+            <h2>Let's Hear From You!</h2>
+            <p style="font-size: 1.4rem; color: var(--text-primary); margin-bottom: 2rem;">Quick Pulse Check</p>
+            
+            <div class="poll-option">
+                <div class="poll-number">1</div>
+                <div>How many have used <strong>ChatGPT, Gemini, or Claude</strong> in the past month?<br>
+                <span style="color: var(--text-muted); font-size: 1rem;">→ For clinical work? For teaching? For research?</span></div>
+            </div>
+            
+            <div class="poll-option">
+                <div class="poll-number">2</div>
+                <div>What's your biggest <strong class="success">hope</strong> OR <strong class="warning">fear</strong> about AI in your work as a urologist?</div>
+            </div>
+            
+            <blockquote style="margin-top: 2rem;">
+                By the end of this session, you'll walk away with at least <strong>one tool</strong> you can use next week.
+            </blockquote>
+        </div>
+
+        <!-- SLIDE 4: What We Will/Won't Cover -->
+        <div class="slide">
+            <h2>Setting Expectations</h2>
+            
+            <div class="comparison-table">
+                <div class="col-yes">
+                    <h3><span class="icon-yes">✓</span> We WILL Cover</h3>
+                    <ul>
+                        <li>Practical AI applications</li>
+                        <li>Tools you can use tomorrow</li>
+                        <li>Strengths AND limitations</li>
+                        <li>For teaching & research</li>
+                        <li>Some ethical guardrails</li>
+                    </ul>
+                </div>
+                <div class="col-no">
+                    <h3><span class="icon-no">✗</span> We WON'T Cover</h3>
+                    <ul>
+                        <li>Deep theory of how LLMs work</li>
+                        <li>Technical architecture</li>
+                        <li>Coding or programming</li>
+                        <li>Clinical decision-support AI</li>
+                        <li>Regulatory/legal frameworks</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 2rem;">
+                <p style="margin-bottom: 0;"><strong>Why this matters:</strong> Understanding that LLMs predict "the most likely next word" helps explain both their strengths (fluency, pattern recognition) and weaknesses (hallucinations, no true understanding)—but we'll focus on <strong class="highlight">practical implications</strong>, not the mechanics.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Why This Talk? -->
+        <div class="slide">
+            <h2>AI in Medicine — Why Now, Why Us?</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🌊 The Scale of Change</h3>
+                    <p>AI is the most disruptive technology since the internet. Medicine—and medical education—will not be exempt.</p>
+                </div>
+                <div class="card">
+                    <h3>🔬 Urology-Specific Relevance</h3>
+                    <p>AI already impacts: prostate MRI interpretation, kidney stone CT analysis, robotic surgery, patient education materials.</p>
+                </div>
+                <div class="card">
+                    <h3>⚖️ The Paradox We Face</h3>
+                    <p>AI can accelerate <strong class="warning">superficial learning</strong>... OR enhance <strong class="success">deep, humanistic practice</strong>. It's our choice to design intentionally.</p>
+                </div>
+            </div>
+            
+            <blockquote style="margin-top: 1.5rem;">
+                "Redesign pedagogy, assessment, and culture to intentionally align with AI's capabilities—freeing cognitive space for what's uniquely human."
+            </blockquote>
+        </div>
+
+        <!-- SLIDE 6: What AI CAN Do -->
+        <div class="slide">
+            <h2>What LLMs Do Well</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Capability</th>
+                        <th>Example for Urologists</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Summarize & Synthesize</strong></td>
+                        <td>Condense 20 papers on TURP outcomes into key themes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generate First Drafts</strong></td>
+                        <td>Create patient information leaflets, teaching cases</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Provide Writing Feedback</strong></td>
+                        <td>Review resident case presentations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Simulate Scenarios</strong></td>
+                        <td>Role-play difficult conversations (e.g., cancer diagnosis)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Translate Complexity</strong></td>
+                        <td>Convert AUA guidelines into trainee-friendly language</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deep Research</strong></td>
+                        <td>Multi-source synthesis with citations (Perplexity, Gemini)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SLIDE 7: What AI CANNOT Do -->
+        <div class="slide">
+            <h2>Where LLMs Fail</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Limitation</th>
+                        <th>Why It Matters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong class="warning">Hallucinations</strong></td>
+                        <td>Confidently states incorrect facts — ALWAYS verify</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="warning">No True Clinical Judgment</strong></td>
+                        <td>Cannot integrate patient context like a clinician</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="warning">Privacy Risks</strong></td>
+                        <td>NEVER input patient-identifiable information</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="warning">Superficial Engagement</strong></td>
+                        <td>May shortcut productive struggle essential for learning</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="warning">Algorithmic Bias</strong></td>
+                        <td>Training data may underrepresent certain populations</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="warning">Outdated Knowledge</strong></td>
+                        <td>Training cutoffs mean recent guidelines may be missing</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <blockquote style="margin-top: 1.5rem; border-left-color: var(--accent-amber);">
+                "The medical adequacy of LLM-generated answers can be <strong>significantly poorer</strong> than those from urology consultants — human oversight is <strong>non-negotiable</strong>."
+            </blockquote>
+        </div>
+
+        <!-- SLIDE 8: AI for Teaching -->
+        <div class="slide">
+            <h2>AI for Clinical Teaching</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Teaching Task</th>
+                        <th>AI Application</th>
+                        <th>Key Tip</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Case-Based Learning</strong></td>
+                        <td>Generate clinical vignettes</td>
+                        <td>Be specific: specialty, level, objective</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Formative Assessment</strong></td>
+                        <td>Create MCQs, short-answer Qs</td>
+                        <td>Always review for accuracy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Feedback on Trainee Work</strong></td>
+                        <td>Analyze presentations for gaps</td>
+                        <td>Use as co-reviewer, not sole evaluator</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reflective Practice</strong></td>
+                        <td>Dialogic partner for reflection</td>
+                        <td>Complements, not replaces, mentorship</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Patient Communication</strong></td>
+                        <td>Simulate difficult conversations</td>
+                        <td>Safe space for practice</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3 style="margin-top: 0;">Practical Tips</h3>
+                <ol>
+                    <li><strong>Prompt engineering matters:</strong> Role → Task → Format → Constraints</li>
+                    <li><strong>Model "AI skepticism":</strong> Show trainees how to verify outputs</li>
+                    <li><strong>Create "productive friction":</strong> Don't let AI bypass necessary struggle</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: AI for Research -->
+        <div class="slide">
+            <h2>AI for Research</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Research Phase</th>
+                        <th>AI Application</th>
+                        <th>Watch Out For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Literature Review</strong></td>
+                        <td>Discover papers, synthesize themes</td>
+                        <td>Hallucinated references — verify every citation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Protocol Development</strong></td>
+                        <td>Draft methodology sections</td>
+                        <td>Requires human refinement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Analysis</strong></td>
+                        <td>Generate R/Python code</td>
+                        <td>Verify code and outputs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Writing First Drafts</strong></td>
+                        <td>Abstracts, intro sections</td>
+                        <td>Heavy revision needed — never submit raw</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anticipate Reviews</strong></td>
+                        <td>"What would reviewers criticize?"</td>
+                        <td>Strengthen weak sections proactively</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="card" style="margin-top: 1.5rem; border-left: 4px solid var(--accent-amber);">
+                <h3 style="margin-top: 0; color: var(--accent-amber);">Ethical Guardrails</h3>
+                <ul>
+                    <li>✅ Disclose AI use in methods (per journal policy)</li>
+                    <li>✅ Use only de-identified or synthetic data</li>
+                    <li>✅ You remain responsible — AI cannot be an author</li>
+                    <li>✅ Every AI-generated claim must be independently verified</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: Tools Overview -->
+        <div class="slide">
+            <h2>AI Tools for Your Workflow</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Managing cognitive load — some tools I've used and trust</p>
+            
+            <div class="tool-category">
+                <h3>💬 General Purpose Chatbots</h3>
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="name">ChatGPT</div>
+                        <div class="desc">Versatile, Canvas for documents</div>
+                        <div class="access">Free / Plus</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="name">Claude</div>
+                        <div class="desc">Long documents (200K), nuanced writing</div>
+                        <div class="access">Free / Pro</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="name">Gemini</div>
+                        <div class="desc">Deep Research, Slides, Infographics</div>
+                        <div class="access">Free</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="name">Perplexity</div>
+                        <div class="desc">Research with real-time citations</div>
+                        <div class="access">Free / Pro</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-category">
+                <h3>📚 Research Tools</h3>
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="name">ResearchRabbit</div>
+                        <div class="desc">Discover related papers, build collections</div>
+                        <div class="access">Free</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="name">SciSpace</div>
+                        <div class="desc">Explain papers, lit review copilot</div>
+                        <div class="access">Free tier</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="name">Elicit</div>
+                        <div class="desc">Extract data from papers, systematic search</div>
+                        <div class="access">Free tier</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="name">AnswerThis</div>
+                        <div class="desc">Answer questions from your paper library</div>
+                        <div class="access">Free tier</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-category">
+                <h3>🧠 RAG / Document Intelligence</h3>
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <div class="name">NotebookLM</div>
+                        <div class="desc">Upload sources, Q&A, audio summaries</div>
+                        <div class="access">Free (Google)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Key Takeaways -->
+        <div class="slide">
+            <h2>What to Remember</h2>
+            
+            <div class="takeaway-grid">
+                <div class="takeaway">
+                    <div class="takeaway-number">1</div>
+                    <p style="margin-bottom: 0;"><strong>AI is a cognitive partner, not a replacement</strong><br>Design intentionally for what's uniquely human</p>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-number">2</div>
+                    <p style="margin-bottom: 0;"><strong>Powerful capabilities AND significant limitations</strong><br>Verify everything; never trust blindly</p>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-number">3</div>
+                    <p style="margin-bottom: 0;"><strong>For Teaching</strong><br>Scaffold learning, maintain human mentorship</p>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-number">4</div>
+                    <p style="margin-bottom: 0;"><strong>For Research</strong><br>Accelerate productivity, disclose use, verify claims</p>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-number">5</div>
+                    <p style="margin-bottom: 0;"><strong>Start Small</strong><br>Pick ONE tool, ONE task this week</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: Call to Action -->
+        <div class="slide" style="display: flex; justify-content: center; align-items: center;">
+            <div style="text-align: center; max-width: 900px;">
+                <h2>Your Next Step</h2>
+                
+                <div class="cta-box">
+                    <h3>This week, try using ChatGPT or Claude to:</h3>
+                    <ul style="font-size: 1.3rem;">
+                        <li>Generate a teaching case for rounds</li>
+                        <li>Summarize a paper for journal club</li>
+                        <li>Draft 5 MCQs on a topic you're teaching</li>
+                    </ul>
+                </div>
+                
+                <blockquote style="border-left-color: var(--accent-green);">
+                    Experience both its power AND its limits firsthand.
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: Q&A -->
+        <div class="slide" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <h2>Questions & Discussion</h2>
+            <p style="font-size: 1.5rem; margin-top: 2rem;">What's one thing you're keen to try?</p>
+            <p style="font-size: 1.5rem;">What concerns remain?</p>
+            <div style="margin-top: 3rem; font-size: 5rem;">💬</div>
+        </div>
+
+        <!-- SLIDE 14: Thank You -->
+        <div class="slide title-slide">
+            <h1 style="font-size: 3.5rem;">Thank You!</h1>
+            <div class="author" style="margin-top: 2rem;">Mucheli Sharavan, MD, MRCP (UK) FAMS, (PhD)</div>
+            <div class="affiliation">National Centre for Infectious Diseases | NHG Group Education</div>
+            <p style="margin-top: 3rem; color: var(--text-muted);">📧 [Your Email] &nbsp; | &nbsp; 🔗 [Resources QR Code]</p>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <button id="prevBtn" onclick="changeSlide(-1)" disabled>
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+        <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">14</span></span>
+        <button id="nextBtn" onclick="changeSlide(1)">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+    </nav>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            
+            document.getElementById('currentSlide').textContent = index + 1;
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+            
+            // Update progress bar
+            const progress = ((index + 1) / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            const newIndex = currentSlide + direction;
+            if (newIndex >= 0 && newIndex < totalSlides) {
+                currentSlide = newIndex;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'Home') {
+                currentSlide = 0;
+                showSlide(currentSlide);
+            } else if (e.key === 'End') {
+                currentSlide = totalSlides - 1;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    changeSlide(1);
+                } else {
+                    changeSlide(-1);
+                }
+            }
+        }
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
