@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Tools for Clinical Teaching & Research</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -34,7 +37,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
@@ -42,25 +46,31 @@
             overflow: hidden;
         }
 
-        /* Slide Container */
+        /* Slide Container - 16:9 Optimized */
         .slides-container {
             width: 100%;
             height: 100vh;
             position: relative;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-primary);
         }
 
         .slide {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            /* 16:9 aspect ratio enforcement */
+            width: min(100%, calc(100vh * 16 / 9));
+            height: min(100vh, calc(100vw * 9 / 16));
+            max-width: 1920px;
+            max-height: 1080px;
             display: none;
-            padding: 60px 80px;
+            padding: 5% 6%;
             opacity: 0;
             transition: opacity 0.5s ease;
             overflow-y: auto;
+            background: var(--bg-primary);
         }
 
         .slide.active {
@@ -98,7 +108,7 @@
         }
 
         p {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             line-height: 1.6;
             color: var(--text-secondary);
             margin-bottom: 1rem;
@@ -112,16 +122,17 @@
         }
 
         /* Lists */
-        ul, ol {
+        ul,
+        ol {
             padding-left: 1.5rem;
             margin-bottom: 1rem;
         }
 
         li {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             line-height: 1.8;
             color: var(--text-secondary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         li strong {
@@ -135,7 +146,8 @@
             margin: 1.5rem 0;
         }
 
-        th, td {
+        th,
+        td {
             padding: 1rem 1.25rem;
             text-align: left;
             border-bottom: 1px solid var(--border-subtle);
@@ -144,14 +156,14 @@
         th {
             font-weight: 600;
             color: var(--accent-blue);
-            font-size: 0.9rem;
+            font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             background: var(--bg-card);
         }
 
         td {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
         }
 
@@ -170,9 +182,10 @@
 
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
             margin-top: 1.5rem;
+            align-items: stretch;
         }
 
         /* Blockquotes */
@@ -280,16 +293,19 @@
 
         .tool-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            align-items: stretch;
         }
 
         .tool-card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 12px;
-            padding: 1.25rem;
+            padding: 1.5rem;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .tool-card:hover {
@@ -300,23 +316,24 @@
         .tool-card .name {
             font-weight: 600;
             color: var(--text-primary);
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             margin-bottom: 0.5rem;
         }
 
         .tool-card .desc {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.4;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            flex-grow: 1;
         }
 
         .tool-card .access {
             display: inline-block;
-            margin-top: 0.75rem;
-            font-size: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
             color: var(--accent-green);
             background: rgba(34, 197, 94, 0.1);
-            padding: 0.25rem 0.75rem;
+            padding: 0.35rem 0.85rem;
             border-radius: 50px;
         }
 
@@ -385,23 +402,31 @@
         /* Key takeaway boxes */
         .takeaway-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            align-items: stretch;
         }
 
         .takeaway {
             background: var(--bg-card);
             border-left: 4px solid var(--accent-blue);
-            padding: 1.5rem;
+            padding: 1.75rem;
             border-radius: 0 12px 12px 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .takeaway-number {
-            font-size: 2rem;
+            font-size: 2.25rem;
             font-weight: 700;
             color: var(--accent-blue);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .takeaway p {
+            font-size: 1.3rem;
+            flex-grow: 1;
         }
 
         /* CTA slide */
@@ -514,64 +539,95 @@
             line-height: 1.8;
         }
 
-        /* Responsive */
+        /* Responsive - 16:9 optimized */
         @media (max-width: 1024px) {
             .slide {
-                padding: 40px 50px;
+                padding: 4% 5%;
             }
-            h1 { font-size: 2.5rem; }
-            h2 { font-size: 2rem; }
-            .two-col, .comparison-table {
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .two-col,
+            .comparison-table {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        /* Ultra-wide screens - maintain 16:9 content area */
+        @media (min-aspect-ratio: 16/9) {
+            .slide {
+                width: calc(100vh * 16 / 9);
+                height: 100vh;
+            }
+        }
+
+        /* Tall screens - maintain 16:9 content area */
+        @media (max-aspect-ratio: 16/9) {
+            .slide {
+                width: 100vw;
+                height: calc(100vw * 9 / 16);
             }
         }
 
         /* Print styles */
         @media print {
-            .nav, .progress-bar { display: none; }
-            .slide { 
-                display: block !important; 
-                page-break-after: always; 
+
+            .nav,
+            .progress-bar {
+                display: none;
+            }
+
+            .slide {
+                display: block !important;
+                page-break-after: always;
                 opacity: 1 !important;
                 position: relative;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="progress-bar" id="progressBar"></div>
-    
+
     <div class="slides-container">
-        
+
         <!-- SLIDE 1: Title -->
         <div class="slide title-slide active">
             <h1>AI Tools for Clinical Teaching & Research</h1>
             <p class="subtitle">A Practical Guide for Urologists</p>
             <div class="author">Mucheli Sharavan, MD, MRCP (UK) FAMS, (PhD)</div>
-            <div class="affiliation">National Centre for Infectious Diseases | NHG Group Education</div>
+            <div class="affiliation">National Centre for Infectious Diseases | NHG Group Education | Singapore</div>
         </div>
 
         <!-- SLIDE 2: Why Me? -->
         <div class="slide">
             <h2>Why Me?</h2>
-            
+
             <div class="two-col">
                 <div>
                     <h3>My Perspective</h3>
                     <ul>
                         <li><strong>Educator First</strong> — Program Director | PhD in Medical Education</li>
-                        <li><strong>Co-Director</strong> — AI eNabled Education (AINE)</li>
+                        <li><strong>Involvement with AI</strong> — Co-Director, AI eNabled Education (AINE)</li>
                     </ul>
-                    
+
                     <div class="award">Best in AI-Driven Healthcare Innovation — GovInsider Healthcare Day 2025</div>
-                    
+
                     <h3>Recent Publications in AI & MedEd</h3>
                     <ul>
-                        <li><em>"Can Large Language Models Foster Reflective Practice?"</em> — Medical Science Educator</li>
+                        <li><em>"Can Large Language Models Foster Reflective Practice?"</em> — Medical Science Educator
+                        </li>
                         <li><em>"Medical Education in the Age of AI"</em> — HK Journal of Emergency Medicine</li>
                     </ul>
                 </div>
-                
+
                 <div>
                     <div class="disclaimer">
                         <p>I am <strong class="highlight">NOT</strong> a coder or programmer.</p>
@@ -582,31 +638,40 @@
             </div>
         </div>
 
-        <!-- SLIDE 3: Audience Pulse -->
+        <!-- SLIDE 3: Audience Pulse via SLIDO -->
         <div class="slide">
             <h2>Let's Hear From You!</h2>
-            <p style="font-size: 1.4rem; color: var(--text-primary); margin-bottom: 2rem;">Quick Pulse Check</p>
-            
+            <p style="font-size: 1.6rem; color: var(--accent-cyan); margin-bottom: 2rem;">📱 Join on
+                <strong>SLIDO</strong>
+            </p>
+
             <div class="poll-option">
                 <div class="poll-number">1</div>
-                <div>How many have used <strong>ChatGPT, Gemini, or Claude</strong> in the past month?<br>
-                <span style="color: var(--text-muted); font-size: 1rem;">→ For clinical work? For teaching? For research?</span></div>
+                <div>How often do you use AI tools, especially LLMs (e.g., ChatGPT, Perplexity, Gemini)?</div>
             </div>
-            
+
             <div class="poll-option">
                 <div class="poll-number">2</div>
-                <div>What's your biggest <strong class="success">hope</strong> OR <strong class="warning">fear</strong> about AI in your work as a urologist?</div>
+                <div>What use cases have you tried LLMs for?</div>
             </div>
-            
+
+            <div class="poll-option">
+                <div class="poll-number">3</div>
+                <div>Rank these concerns about using AI tools for teaching and research<br>
+                    <span style="color: var(--text-muted); font-size: 1rem;">1 = biggest concern</span>
+                </div>
+            </div>
+
             <blockquote style="margin-top: 2rem;">
-                By the end of this session, you'll walk away with at least <strong>one tool</strong> you can use next week.
+                By the end of this session, you'll walk away with at least <strong>one tool</strong> you can use next
+                week.
             </blockquote>
         </div>
 
         <!-- SLIDE 4: What We Will/Won't Cover -->
         <div class="slide">
             <h2>Setting Expectations</h2>
-            
+
             <div class="comparison-table">
                 <div class="col-yes">
                     <h3><span class="icon-yes">✓</span> We WILL Cover</h3>
@@ -629,80 +694,80 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="card" style="margin-top: 2rem;">
-                <p style="margin-bottom: 0;"><strong>Why this matters:</strong> Understanding that LLMs predict "the most likely next word" helps explain both their strengths (fluency, pattern recognition) and weaknesses (hallucinations, no true understanding)—but we'll focus on <strong class="highlight">practical implications</strong>, not the mechanics.</p>
+                <p style="margin-bottom: 0;"><strong>Why this matters:</strong> Understanding that LLMs predict "the
+                    most likely next word" helps explain both their strengths (fluency, pattern recognition) and
+                    weaknesses (hallucinations, no true understanding)—but we'll focus on <strong
+                        class="highlight">practical implications</strong>, not the mechanics.</p>
             </div>
         </div>
 
         <!-- SLIDE 5: Why This Talk? -->
         <div class="slide">
             <h2>AI in Medicine — Why Now, Why Us?</h2>
-            
+
             <div class="card-grid">
                 <div class="card">
                     <h3>🌊 The Scale of Change</h3>
-                    <p>AI is the most disruptive technology since the internet. Medicine—and medical education—will not be exempt.</p>
+                    <p>AI is the most disruptive technology since the internet. Medicine—and medical education—will not
+                        be exempt.</p>
                 </div>
                 <div class="card">
                     <h3>🔬 Urology-Specific Relevance</h3>
-                    <p>AI already impacts: prostate MRI interpretation, kidney stone CT analysis, robotic surgery, patient education materials.</p>
+                    <p>AI already impacts: prostate MRI interpretation, kidney stone CT analysis, robotic surgery,
+                        patient education materials.</p>
                 </div>
                 <div class="card">
-                    <h3>⚖️ The Paradox We Face</h3>
-                    <p>AI can accelerate <strong class="warning">superficial learning</strong>... OR enhance <strong class="success">deep, humanistic practice</strong>. It's our choice to design intentionally.</p>
+                    <h3>🚀 Learn or Be Left Behind</h3>
+                    <p>AI adoption in medicine is <strong class="warning">imminent</strong>—the question isn't whether,
+                        but how. <strong class="success">Tap into its strengths</strong> to amplify your work, not
+                        replace what's uniquely human.</p>
                 </div>
             </div>
-            
+
             <blockquote style="margin-top: 1.5rem;">
-                "Redesign pedagogy, assessment, and culture to intentionally align with AI's capabilities—freeing cognitive space for what's uniquely human."
+                "Redesign pedagogy, assessment, and culture to intentionally align with AI's capabilities—freeing
+                cognitive space for what's uniquely human."
             </blockquote>
         </div>
 
         <!-- SLIDE 6: What AI CAN Do -->
         <div class="slide">
             <h2>What LLMs Do Well</h2>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Capability</th>
-                        <th>Example for Urologists</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Summarize & Synthesize</strong></td>
-                        <td>Condense 20 papers on TURP outcomes into key themes</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Generate First Drafts</strong></td>
-                        <td>Create patient information leaflets, teaching cases</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Provide Writing Feedback</strong></td>
-                        <td>Review resident case presentations</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Simulate Scenarios</strong></td>
-                        <td>Role-play difficult conversations (e.g., cancer diagnosis)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Translate Complexity</strong></td>
-                        <td>Convert AUA guidelines into trainee-friendly language</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deep Research</strong></td>
-                        <td>Multi-source synthesis with citations (Perplexity, Gemini)</td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <div class="card" style="border-left: 4px solid var(--accent-blue); padding: 1.75rem;">
+                    <h3 style="margin-top: 0; font-size: 1.5rem;">📊 Summarize & Synthesize</h3>
+                    <p style="margin-bottom: 0; font-size: 1.3rem;">Condense 20 papers on TURP outcomes into key themes
+                    </p>
+                </div>
+                <div class="card" style="border-left: 4px solid var(--accent-purple); padding: 1.75rem;">
+                    <h3 style="margin-top: 0; font-size: 1.5rem;">✍️ Provide Writing Feedback</h3>
+                    <p style="margin-bottom: 0; font-size: 1.3rem;">Review resident case presentations and op notes</p>
+                </div>
+                <div class="card" style="border-left: 4px solid var(--accent-green); padding: 1.75rem;">
+                    <h3 style="margin-top: 0; font-size: 1.5rem;">🎭 Simulate Scenarios</h3>
+                    <p style="margin-bottom: 0; font-size: 1.3rem;">Role-play difficult conversations (e.g., cancer
+                        diagnosis, post-op complications)</p>
+                </div>
+                <div class="card" style="border-left: 4px solid var(--accent-cyan); padding: 1.75rem;">
+                    <h3 style="margin-top: 0; font-size: 1.5rem;">🔬 Deep Research</h3>
+                    <p style="margin-bottom: 0; font-size: 1.3rem;">Multi-source synthesis with citations (Perplexity,
+                        Gemini)</p>
+                </div>
+                <div class="card" style="border-left: 4px solid var(--accent-amber); padding: 1.75rem;">
+                    <h3 style="margin-top: 0; font-size: 1.5rem;">📚 RAG (Retrieval-Augmented Generation)</h3>
+                    <p style="margin-bottom: 0; font-size: 1.3rem;">Query your own documents—guidelines, protocols,
+                        papers—with accurate, grounded answers</p>
+                </div>
+            </div>
         </div>
 
         <!-- SLIDE 7: What AI CANNOT Do -->
         <div class="slide">
             <h2>Where LLMs Fail</h2>
-            
+
             <table>
                 <thead>
                     <tr>
@@ -737,57 +802,58 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <blockquote style="margin-top: 1.5rem; border-left-color: var(--accent-amber);">
-                "The medical adequacy of LLM-generated answers can be <strong>significantly poorer</strong> than those from urology consultants — human oversight is <strong>non-negotiable</strong>."
+                "The medical adequacy of LLM-generated answers can be <strong>significantly poorer</strong> than those
+                from urology consultants — human oversight is <strong>non-negotiable</strong>."
             </blockquote>
         </div>
 
-        <!-- SLIDE 8: AI for Teaching -->
+        <!-- SLIDE 8: AI for Clinical Teaching -->
         <div class="slide">
-            <h2>AI for Clinical Teaching</h2>
-            
+            <h2>AI for Surgical Teaching</h2>
+
             <table>
                 <thead>
                     <tr>
-                        <th>Teaching Task</th>
+                        <th>Training Scenario</th>
                         <th>AI Application</th>
-                        <th>Key Tip</th>
+                        <th>Surgeon's Tip</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Case-Based Learning</strong></td>
-                        <td>Generate clinical vignettes</td>
-                        <td>Be specific: specialty, level, objective</td>
+                        <td><strong>Pre-Op Case Prep</strong></td>
+                        <td>Generate teaching vignettes with imaging/labs</td>
+                        <td>Specify procedure type, trainee level, learning goal</td>
                     </tr>
                     <tr>
-                        <td><strong>Formative Assessment</strong></td>
-                        <td>Create MCQs, short-answer Qs</td>
-                        <td>Always review for accuracy</td>
+                        <td><strong>Surgical Quiz</strong></td>
+                        <td>Create MCQs on anatomy, technique, complications</td>
+                        <td>Always verify—AI may miss nuances</td>
                     </tr>
                     <tr>
-                        <td><strong>Feedback on Trainee Work</strong></td>
-                        <td>Analyze presentations for gaps</td>
+                        <td><strong>Op Note & Handover Feedback</strong></td>
+                        <td>Review trainee documentation for gaps</td>
                         <td>Use as co-reviewer, not sole evaluator</td>
                     </tr>
                     <tr>
-                        <td><strong>Reflective Practice</strong></td>
-                        <td>Dialogic partner for reflection</td>
-                        <td>Complements, not replaces, mentorship</td>
+                        <td><strong>M&M / Reflective Debrief</strong></td>
+                        <td>Dialogic partner for case reflection</td>
+                        <td>Complements, not replaces, faculty debrief</td>
                     </tr>
                     <tr>
-                        <td><strong>Patient Communication</strong></td>
-                        <td>Simulate difficult conversations</td>
-                        <td>Safe space for practice</td>
+                        <td><strong>Breaking Bad News</strong></td>
+                        <td>Simulate difficult post-op conversations</td>
+                        <td>Safe rehearsal before the real thing</td>
                     </tr>
                 </tbody>
             </table>
-            
+
             <div class="card" style="margin-top: 1.5rem;">
                 <h3 style="margin-top: 0;">Practical Tips</h3>
                 <ol>
-                    <li><strong>Prompt engineering matters:</strong> Role → Task → Format → Constraints</li>
+                    <li><strong>Good prompting matters:</strong> Role → Task → Format → Constraints</li>
                     <li><strong>Model "AI skepticism":</strong> Show trainees how to verify outputs</li>
                     <li><strong>Create "productive friction":</strong> Don't let AI bypass necessary struggle</li>
                 </ol>
@@ -797,7 +863,7 @@
         <!-- SLIDE 9: AI for Research -->
         <div class="slide">
             <h2>AI for Research</h2>
-            
+
             <table>
                 <thead>
                     <tr>
@@ -834,7 +900,7 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <div class="card" style="margin-top: 1.5rem; border-left: 4px solid var(--accent-amber);">
                 <h3 style="margin-top: 0; color: var(--accent-amber);">Ethical Guardrails</h3>
                 <ul>
@@ -847,10 +913,11 @@
         </div>
 
         <!-- SLIDE 10: Tools Overview -->
-        <div class="slide">
+        <div class="slide" style="overflow: hidden; padding: 3% 4%;">
             <h2>AI Tools for Your Workflow</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Managing cognitive load — some tools I've used and trust</p>
-            
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Managing cognitive load — some tools I've used
+                and trust</p>
+
             <div class="tool-category">
                 <h3>💬 General Purpose Chatbots</h3>
                 <div class="tool-grid">
@@ -876,7 +943,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="tool-category">
                 <h3>📚 Research Tools</h3>
                 <div class="tool-grid">
@@ -902,7 +969,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="tool-category">
                 <h3>🧠 RAG / Document Intelligence</h3>
                 <div class="tool-grid">
@@ -918,27 +985,37 @@
         <!-- SLIDE 11: Key Takeaways -->
         <div class="slide">
             <h2>What to Remember</h2>
-            
-            <div class="takeaway-grid">
-                <div class="takeaway">
-                    <div class="takeaway-number">1</div>
-                    <p style="margin-bottom: 0;"><strong>AI is a cognitive partner, not a replacement</strong><br>Design intentionally for what's uniquely human</p>
+
+            <!-- Top row: 2 boxes -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <div class="takeaway" style="padding: 2rem;">
+                    <div class="takeaway-number" style="font-size: 2.5rem;">1</div>
+                    <p style="margin-bottom: 0; font-size: 1.5rem;"><strong>AI is a cognitive partner, not a
+                            replacement</strong><br>Design intentionally for what's uniquely human</p>
                 </div>
-                <div class="takeaway">
-                    <div class="takeaway-number">2</div>
-                    <p style="margin-bottom: 0;"><strong>Powerful capabilities AND significant limitations</strong><br>Verify everything; never trust blindly</p>
+                <div class="takeaway" style="padding: 2rem;">
+                    <div class="takeaway-number" style="font-size: 2.5rem;">2</div>
+                    <p style="margin-bottom: 0; font-size: 1.5rem;"><strong>Powerful capabilities AND significant
+                            limitations</strong><br>Verify everything; never trust blindly</p>
                 </div>
-                <div class="takeaway">
-                    <div class="takeaway-number">3</div>
-                    <p style="margin-bottom: 0;"><strong>For Teaching</strong><br>Scaffold learning, maintain human mentorship</p>
+            </div>
+
+            <!-- Bottom row: 3 boxes -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                <div class="takeaway" style="padding: 2rem;">
+                    <div class="takeaway-number" style="font-size: 2.5rem;">3</div>
+                    <p style="margin-bottom: 0; font-size: 1.5rem;"><strong>For Teaching</strong><br>Scaffold learning,
+                        maintain human mentorship</p>
                 </div>
-                <div class="takeaway">
-                    <div class="takeaway-number">4</div>
-                    <p style="margin-bottom: 0;"><strong>For Research</strong><br>Accelerate productivity, disclose use, verify claims</p>
+                <div class="takeaway" style="padding: 2rem;">
+                    <div class="takeaway-number" style="font-size: 2.5rem;">4</div>
+                    <p style="margin-bottom: 0; font-size: 1.5rem;"><strong>For Research</strong><br>Accelerate
+                        productivity, disclose use, verify claims</p>
                 </div>
-                <div class="takeaway">
-                    <div class="takeaway-number">5</div>
-                    <p style="margin-bottom: 0;"><strong>Start Small</strong><br>Pick ONE tool, ONE task this week</p>
+                <div class="takeaway" style="padding: 2rem;">
+                    <div class="takeaway-number" style="font-size: 2.5rem;">5</div>
+                    <p style="margin-bottom: 0; font-size: 1.5rem;"><strong>Start Small</strong><br>Pick ONE tool, ONE
+                        task this week</p>
                 </div>
             </div>
         </div>
@@ -947,7 +1024,7 @@
         <div class="slide" style="display: flex; justify-content: center; align-items: center;">
             <div style="text-align: center; max-width: 900px;">
                 <h2>Your Next Step</h2>
-                
+
                 <div class="cta-box">
                     <h3>This week, try using ChatGPT or Claude to:</h3>
                     <ul style="font-size: 1.3rem;">
@@ -956,7 +1033,7 @@
                         <li>Draft 5 MCQs on a topic you're teaching</li>
                     </ul>
                 </div>
-                
+
                 <blockquote style="border-left-color: var(--accent-green);">
                     Experience both its power AND its limits firsthand.
                 </blockquote>
@@ -964,7 +1041,8 @@
         </div>
 
         <!-- SLIDE 13: Q&A -->
-        <div class="slide" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <div class="slide"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
             <h2>Questions & Discussion</h2>
             <p style="font-size: 1.5rem; margin-top: 2rem;">What's one thing you're keen to try?</p>
             <p style="font-size: 1.5rem;">What concerns remain?</p>
@@ -976,7 +1054,8 @@
             <h1 style="font-size: 3.5rem;">Thank You!</h1>
             <div class="author" style="margin-top: 2rem;">Mucheli Sharavan, MD, MRCP (UK) FAMS, (PhD)</div>
             <div class="affiliation">National Centre for Infectious Diseases | NHG Group Education</div>
-            <p style="margin-top: 3rem; color: var(--text-muted);">📧 [Your Email] &nbsp; | &nbsp; 🔗 [Resources QR Code]</p>
+            <p style="margin-top: 3rem; color: var(--text-muted);">📧 [Your Email] &nbsp; | &nbsp; 🔗 [Resources QR
+                Code]</p>
         </div>
 
     </div>
@@ -985,13 +1064,13 @@
     <nav class="nav">
         <button id="prevBtn" onclick="changeSlide(-1)" disabled>
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M15 18l-6-6 6-6"/>
+                <path d="M15 18l-6-6 6-6" />
             </svg>
         </button>
         <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">14</span></span>
         <button id="nextBtn" onclick="changeSlide(1)">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M9 18l6-6-6-6"/>
+                <path d="M9 18l6-6-6-6" />
             </svg>
         </button>
     </nav>
@@ -1010,11 +1089,11 @@
                     slide.classList.add('active');
                 }
             });
-            
+
             document.getElementById('currentSlide').textContent = index + 1;
             document.getElementById('prevBtn').disabled = index === 0;
             document.getElementById('nextBtn').disabled = index === totalSlides - 1;
-            
+
             // Update progress bar
             const progress = ((index + 1) / totalSlides) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
@@ -1073,4 +1152,5 @@
         showSlide(0);
     </script>
 </body>
+
 </html>
